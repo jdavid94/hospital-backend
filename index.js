@@ -9,6 +9,9 @@ const app = express();
 // Cors Configuration
 app.use(cors());
 
+// Read and Pars BODY
+app.use(express.json());
+
 // DataBase
 dbConnection();
 
@@ -16,12 +19,8 @@ dbConnection();
 //console.log(process.env);
 
 // Routes
-app.get('/', (req, res) => {
-    res.json({
-        ok: true,
-        msg: 'Hello World'
-    })
-});
+app.use('/api/users', require('./routes/users'));
+app.use('/api/login', require('./routes/auth'));
 
 // Server Init
 app.listen(process.env.PORT, () => {

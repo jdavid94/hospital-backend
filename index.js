@@ -20,9 +20,14 @@ dbConnection();
 
 // Routes
 app.use('/api/users', require('./routes/users'));
+app.use('/api/hospital', require('./routes/hospitals'));
+app.use('/api/doctors', require('./routes/doctors'));
+app.use('/api/all', require('./routes/searchs'));
+app.use('/api/upload', require('./routes/upload'));
 app.use('/api/login', require('./routes/auth'));
+
 
 // Server Init
 app.listen(process.env.PORT, () => {
-    console.log('Server Listening on port ' + process.env.PORT);
+    console.log('Server Running on port ' + process.env.PORT);
 })

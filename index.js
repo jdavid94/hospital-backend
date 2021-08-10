@@ -15,6 +15,9 @@ app.use(express.json());
 // DataBase
 dbConnection();
 
+// Public Directory
+app.use(express.static('public')); // Set an enter point for the app
+
 // Show Env Variables
 //console.log(process.env);
 

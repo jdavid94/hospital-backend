@@ -2,6 +2,7 @@ const { response } = require('express');
 const Doctor = require('../models/doctor');
 const { generateJWT } = require('../helpers/jwt');
 
+
 const getDoctors = async(req, res = response) => {
     const doctors = await Doctor.find()
         .populate('user', 'name img')
@@ -37,17 +38,57 @@ const postDoctor = async(req, res = response) => {
 }
 
 const putDoctor = async(req, res = response) => {
-    res.json({
-        ok: true,
-        msg: 'PutDoctor'
-    })
+    const id = req.params.id;
+    const uid = req.uid;
+    try {
+        const doctorDB = await Doctor.findById(id);
+        if (!doctorDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Doctor Does Not Find by ID'
+            })
+        }
+        const changedDoctor = {
+            ...req.body,
+            user: uid
+        };
+        const doctorUpdated = await Doctor.findByIdAndUpdate(id, changedDoctor, { new: true });
+        res.json({
+            ok: true,
+            doctorUpdated
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Unexpected Error - PUT'
+        })
+    }
 }
 
 const deleteDoctor = async(req, res = response) => {
-    res.json({
-        ok: true,
-        msg: 'DeleteDoctor'
-    })
+    const id = req.params.id;
+    try {
+        const doctorDB = await Doctor.findById(id);
+        if (!doctorDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Doctor Does Not Find by ID'
+            })
+        }
+        await Doctor.findByIdAndDelete(id);
+        res.json({
+            ok: true,
+            msg: 'Doctor Deleted'
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Unexpected Error - DELETE'
+        })
+    }
+
 }
 
 

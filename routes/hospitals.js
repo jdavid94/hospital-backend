@@ -18,7 +18,7 @@ const router = Router();
 // Call the Controller Hospital Function
 router.get('/', getHospitals);
 router.post('/', [validateJWT, check('name', 'Hospital Name is Requried').not().isEmpty(), validateCampos], postHospital);
-router.put('/:id', [], putHospital);
-router.delete('/:id', deleteHospital);
+router.put('/:id', [validateJWT, check('name', 'Hospital Name is Requried').not().isEmpty(), validateCampos], putHospital);
+router.delete('/:id', validateJWT, deleteHospital);
 
 module.exports = router;

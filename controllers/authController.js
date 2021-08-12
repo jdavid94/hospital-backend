@@ -75,10 +75,20 @@ const googleSignIn = async(req, res = response) => {
             msg: 'Unexpected Error - INVALID TOKEN'
         });
     }
+}
 
+const renewToken = async(req, res = response) => {
+    const uid = req.uid;
+    // TOKEN Generation - JWT
+    const token = await generateJWT(uid);
+    res.json({
+        ok: true,
+        token
+    });
 }
 
 module.exports = {
     login,
-    googleSignIn
+    googleSignIn,
+    renewToken
 }

@@ -10,17 +10,19 @@ const {
     getDoctors,
     postDoctor,
     putDoctor,
-    deleteDoctor
+    deleteDoctor,
+    getDoctorByID
 } = require('../controllers/doctorsController');
 // Controller Import
 const router = Router();
 
 // Call the Controller Hospital Function
-router.get('/', getDoctors);
+router.get('/', validateJWT, getDoctors);
 router.post('/', [
     validateJWT, check('name', 'Doctor Name is Requried').not().isEmpty(), check('hospital', 'Hospital ID Must be Valid').isMongoId(), validateCampos
 ], postDoctor);
 router.put('/:id', [validateJWT, check('name', 'Doctor Name is Requried').not().isEmpty(), check('hospital', 'Hospital ID Must be Valid').isMongoId(), validateCampos], putDoctor);
+router.get('/:id', validateJWT, getDoctorByID);
 router.delete('/:id', validateJWT, deleteDoctor);
 
 module.exports = router;

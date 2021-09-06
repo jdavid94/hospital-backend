@@ -20,7 +20,7 @@ router.post('/', [check('name', 'Name is Required').not().isEmpty(),
 ], postUser);
 router.put('/:id', [validateJWT, check('name', 'Name is Required').not().isEmpty(),
     check('email', 'Email is Required').isEmail(),
-    check('role', 'Role is Required').not().isEmpty(),
+    //check('role', 'Role is Required').not().isEmpty(),
     validateCampos
 ], putUser);
 router.delete('/:id', validateJWT, deleteUser);

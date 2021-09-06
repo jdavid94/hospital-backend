@@ -7,7 +7,7 @@ const { generateJWT } = require('../helpers/jwt');
 const getUsers = async(req, res) => {
     const from = Number(req.query.from) || 0;
     const [users, total] = await Promise.all([ // Run at the same time
-        User.find({}, 'name email google role img')
+        User.find({}, 'name email google roles img')
         .skip(from)
         .limit(5), // Number of Arguments to show
         User.countDocuments()
@@ -75,7 +75,14 @@ const putUser = async(req, res = response) => {
                 });
             }
         }
-        campos.email = email;
+        if (!userDB.google) {
+            campos.email = email;
+        } else if (userDB.email !== email) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Google Users Cannot Change Email'
+            })
+        }
         const userUpdated = await User.findByIdAndUpdate(uid, campos, { new: true }); // Return Updated Value
         res.json({
             ok: true,
